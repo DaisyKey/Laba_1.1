@@ -5,7 +5,6 @@
 using namespace std;
 
 template <typename T>
-T proverka(T min, T max , string n)
 T Checking(T min, T max, string n)
 {
 	T x;
