@@ -9,7 +9,7 @@ T Checking(T min, T max, string n)
 {
 	T x;
 	cout << n;
-	while ((cin > x).fail() || x > max || x < min)
+	while ((cin >> x).fail() || x > max || x < min)
 	{
 		cin.clear();
 		cin.ignore(10000, '\n');
@@ -209,7 +209,110 @@ Station browseStation(ifstream& fin)
 
 int main()
 {
-	main_menu();
-	system("Pause");
 
+	pipe pi;
+	Station st;
+	bool is_pipe = false;
+	bool is_station = false;
+	while (1)
+	{
+		main_menu();
+		switch (Checking(0, 7, "MAIN MENU:"))
+		{
+		case 1:
+		{
+			pi = createpipe();
+			is_pipe = true;
+			break;
+		}
+		case 2:
+		{
+			st = createStation();
+			is_station = true;
+			break;
+		}
+		case 3:
+			if (is_pipe && is_station)
+			{
+				{
+					cout << "Choose 1 - pipe ; 2 - station";
+					int q = 0;
+					cin >> q;
+					viewall(q, pi, st);
+				}
+			}
+			else
+			{
+				cout << "Input Data for Station or Pipe";
+			}
+			break;
+		case 4:
+		{
+			if (is_pipe == true)
+			{
+				editpipe(pi);
+				break;
+			}
+		}
+		case 5:
+		{
+			if (is_station == true)
+			{
+				editStation(st);
+				break;
+			}
+		}
+		case 6:
+		{
+			if (!is_pipe && !is_station)
+			{
+				cout << "No Data" << endl;
+				break;
+			}
+			ofstream fout;
+			fout.open("all.txt", ios::out);
+			if (!fout.is_open())
+			{
+				cout << "Save failed" << endl;
+				break;
+			}
+			fout << is_pipe << endl;
+			if (is_pipe)
+				savepipe(pi, fout);
+			fout << is_station << endl;
+			if (is_station)
+				saveStation(st, fout);
+			fout.close();
+			break;
+
+		}
+		case 7:
+		{
+			ifstream fin;
+			fin.open("all.txt", ios::in);
+			if (!fin.is_open())
+			{
+				cout << "loaad failed" << endl;
+				break;
+			}
+			fin >> is_pipe;
+			if (is_pipe)
+				pi = browsepipe(fin);
+			fin >> is_station;
+			if (is_station)
+				st = browseStation(fin);
+			fin.close();
+			break;
+		}
+		case 0:
+		{
+			return 0;
+		}
+		default:
+		{
+			cout << "Error";
+		}
+		}
+	}
+	return 0;
 }
