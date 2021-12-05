@@ -82,6 +82,79 @@ void main_menu()
 	cout << "0_exit" << endl;
 }
 
+void viewpipe(const pipe& p)
+{
+	cout << "ID:" << p.id << endl;
+	cout << "Length:" << p.lenght << endl;
+	cout << "Diametr:" << p.diametr << endl;
+	cout << "repair status:" << p.repair_status << endl;
+}
+
+void viewStation(const Station& s)
+{
+	cout << "ID:" << s.id << endl;
+	cout << "Name:" << s.name << endl;
+	cout << "Workshop:" << s.workshop << endl;
+	cout << "Busy Workshops:" << s.busy_workshop << endl;
+	cout << "Effection:" << s.effection << endl;
+}
+
+void viewall(int q, const pipe& pi, const Station& st)
+{
+	switch (q)
+	{
+	case 1:
+		viewpipe(pi);
+		break;
+	case 2:
+		viewStation(st);
+		break;
+	}
+}
+
+void editpipe(pipe& p)
+{
+	if (p.repair_status == 0)
+	{
+		p.repair_status = 0;
+		cout << "\n Pipe isn't repairing now";
+	}
+	else
+	{
+		p.repair_status = 1;
+		cout << "\n Pipe is repairing now";
+	}
+
+	p.repair_status = Checking (0, 1, "\n'Change repair_status: 1 - repairng ; 0 - isn't repairing");
+
+};
+
+void editStation(Station& s)
+{
+	cout << "\n 3_ All workshops count:" << s.workshop;
+	cout << "\n 2_ Busy workshops count:" << s.busy_workshop;
+	int choise;
+	choise = Checking (0, 1, "\n'Input 1 for count+ or 0 for changing workshops count: ");
+	do
+	{
+		if (choise == 1 && s.busy_workshop < s.workshop)
+		{
+			s.busy_workshop += 1;
+		}
+		else if (choise == 0 && s.busy_workshop > 0)
+		{
+			cout << " Busy workshop count (-) \n";
+			s.busy_workshop -= 1;
+		}
+		else
+		{
+			cout << "impossible" << endl;
+		}
+
+
+	} while (cin.fail() || Number(int(choise)));
+};
+
 
 int main()
 {
