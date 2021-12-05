@@ -155,6 +155,58 @@ void editStation(Station& s)
 	} while (cin.fail() || Number(int(choise)));
 };
 
+void savepipe(const pipe& p, ofstream& fout)
+{
+	if (fout.is_open())
+	{
+		fout << p.id << endl
+			<< p.lenght << endl
+			<< p.diametr << endl
+			<< p.repair_status << endl;
+	}
+}
+
+void saveStation(const Station& s, ofstream&fout)
+{
+	if (fout.is_open())
+	{
+		fout << s.id << endl
+			<< s.name << endl
+			<< s.workshop << endl
+			<< s.busy_workshop << endl
+			<< s.effection << endl;
+	}
+}
+
+pipe browsepipe(ifstream& fin)
+{
+	if (fin.is_open())
+	{
+		pipe p;
+		fin >> p.id;
+		fin >> p.lenght;
+		fin >> p.diametr;
+		fin >> p.repair_status;
+		return p;
+	}
+	return {};
+};
+
+Station browseStation(ifstream& fin)
+{
+	if (fin.is_open())
+	{
+		Station s;
+		fin >> s.id;
+		fin >> s.name;
+		fin >> s.workshop;
+		fin >> s.busy_workshop;
+		fin >> s.effection;
+		return s;
+	}
+	return {};
+}
+
 
 int main()
 {
