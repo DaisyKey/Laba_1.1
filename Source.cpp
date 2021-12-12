@@ -28,11 +28,14 @@ struct pipe
 
 pipe createpipe()
 {
+	system("cls");
+	// bool is_pipe = true;
+	cout << "ADD PIPE'S DATA" << endl;
 	pipe p;
 	p.id = 1;
-	p.lenght = Checking(0, 1000, "\n'Input Length:");
-	p.diametr = Checking(0, 1000, "\n'Input diametr:");
-	p.repair_status = Checking(0, 1, "\n'Input repair status:");
+	p.lenght = Checking(0, 1000, "\n Input Length:");
+	p.diametr = Checking(0, 1000, "\n Input diametr:");
+	p.repair_status = Checking(0, 1, "\n Input repair status: (0 - isn't repairing ; 1 - is repairing): ");
 	return p;
 };
 
@@ -49,15 +52,17 @@ struct Station
 
 Station createStation()
 {
+	system("cls");
+	//bool is_staition = true;
+	cout << "ADD STAITION'S DATA" << endl;
 	Station s;
-	//s.is_station == true;
 	s.id = 1;
-	cout << "Input station name:" << endl;
+	cout << "\n Input station name:" << endl;
 	cin.ignore(10000, '\n');
 	getline(cin, s.name);
-	s.workshop = Checking(1, 10000, "\n'Input workshop's numbers :");
-	s.busy_workshop = Checking(0, s.workshop, "\n'Input busy workshop numbers :");
-	s.effection = Checking(1, 100, "\n'Input Effection:");
+	s.workshop = Checking(1, 10000, "\n Input workshop's numbers :");
+	s.busy_workshop = Checking(0, s.workshop, "\n Input busy workshop numbers :");
+	s.effection = Checking(1, 100, "\n Input Effection:");
 	return s;
 };
 
@@ -71,7 +76,7 @@ bool Number(char Symbol)
 
 void main_menu()
 {
-	cout << "1_Pipe" << endl;
+	cout << "\n1_Pipe" << endl;
 	cout << "2_Station" << endl;
 	cout << "3_Look" << endl;
 	cout << "4_Edit Pipe" << endl;
@@ -81,32 +86,51 @@ void main_menu()
 	cout << "0_exit" << endl;
 }
 
-void viewpipe(const pipe& p)
-{
-	cout << "ID:" << p.id << endl;
-	cout << "Length:" << p.lenght << endl;
-	cout << "Diametr:" << p.diametr << endl;
-	cout << "repair status:" << p.repair_status << endl;
+void viewpipe(const pipe& p, bool is_pipe)
+{   
+	system("cls");
+	if (is_pipe == true) {
+		cout << "ID:" << p.id << endl;
+		cout << "Length:" << p.lenght << endl;
+		cout << "Diametr:" << p.diametr << endl;
+		cout << "repair status:" << p.repair_status << endl;
+		cout << "Input any symbol to return to main menu: ";
+	}
+	else {
+		cout << "Pipes didn't create!" << endl << "Input any symbol to return to main menu: " << endl;
+	}
 }
 
-void viewStation(const Station& s)
+void viewStation(const Station& s, bool is_staition)
 {
-	cout << "ID:" << s.id << endl;
-	cout << "Name:" << s.name << endl;
-	cout << "Workshop:" << s.workshop << endl;
-	cout << "Busy Workshops:" << s.busy_workshop << endl;
-	cout << "Effection:" << s.effection << endl;
+	system("cls");
+	if (is_staition == true) {
+		cout << "ID:" << s.id << endl;
+		cout << "Name:" << s.name << endl;
+		cout << "Workshop:" << s.workshop << endl;
+		cout << "Busy Workshops:" << s.busy_workshop << endl;
+		cout << "Effection:" << s.effection << endl;
+		cout << "Input any symbol to return to main menu: ";
+	}
+	else {
+		cout << "Staitions didn't create!" << endl << " Input any symbol to returning to main menu: " << endl;
+	}
 }
 
-void viewall(int q, const pipe& pi, const Station& st)
+void viewall(int q, const pipe& pi, const Station& st, bool is_staition, bool is_pipe)
 {
+	string s;
 	switch (q)
 	{
 	case 1:
-		viewpipe(pi);
+		viewpipe(pi, is_pipe);
+		cin >> s;
+		system("cls");
 		break;
 	case 2:
-		viewStation(st);
+		viewStation(st, is_staition);
+		cin >> s;
+		system("cls");
 		break;
 	}
 }
@@ -116,22 +140,22 @@ void editpipe(pipe& p)
 	if (p.repair_status == 0)
 	{
 		p.repair_status = 0;
-		cout << "\n Pipe isn't repairing now";
+		cout << "\n Pipe isn't repairing now"<< endl;
 	}
 	else
 	{
 		p.repair_status = 1;
-		cout << "\n Pipe is repairing now";
+		cout << "\n Pipe is repairing now"<< endl;
 	}
 
-	p.repair_status = Checking (0, 1, "\n'Change repair_status: 1 - repairng ; 0 - isn't repairing");
+	p.repair_status = Checking (0, 1, "\n'Change repair_status: 1 - repairng ; 0 - isn't repairing: ");
 
 };
 
 void editStation(Station& s)
 {
-	cout << "\n 3_ All workshops count:" << s.workshop;
-	cout << "\n 2_ Busy workshops count:" << s.busy_workshop;
+	cout << "\n 3_ All workshops count:" << s.workshop << endl;
+	cout << "\n 2_ Busy workshops count:" << s.busy_workshop << endl;
 	int choise;
 	choise = Checking (0, 1, "\n'Input 1 for count+ or 0 for changing workshops count: ");
 	do
@@ -156,6 +180,7 @@ void editStation(Station& s)
 
 void savepipe(const pipe& p, ofstream& fout)
 {
+	system("cls");
 	if (fout.is_open())
 	{
 		fout << p.id << endl
@@ -213,38 +238,36 @@ int main()
 	pipe pi;
 	Station st;
 	bool is_pipe = false;
-	bool is_station = false;
+	bool is_staition = false;
 	while (1)
 	{
 		main_menu();
 		switch (Checking(0, 7, "MAIN MENU:"))
 		{
 		case 1:
-		{
+		{ 
 			pi = createpipe();
 			is_pipe = true;
+			system("cls");
+			cout << "Pipe was added!" << endl << "Returning to main menu..." << endl;
 			break;
 		}
 		case 2:
 		{
 			st = createStation();
-			is_station = true;
+			is_staition = true;
+			system("cls");
+			cout << "Staition was added!" << endl << "Returning to main menu..." << endl;
 			break;
 		}
 		case 3:
-			if (is_pipe && is_station)
-			{
 				{
-					cout << "Choose 1 - pipe ; 2 - station";
+					cout << "\n Choose 1 - pipe ; 2 - station "<< endl;
 					int q = 0;
 					cin >> q;
-					viewall(q, pi, st);
+				    viewall(q, pi, st, is_staition, is_pipe);
 				}
-			}
-			else
-			{
-				cout << "Input Data for Station or Pipe";
-			}
+				cout << "Returning to main menu..." << endl;
 			break;
 		case 4:
 		{
@@ -256,7 +279,7 @@ int main()
 		}
 		case 5:
 		{
-			if (is_station == true)
+			if (is_staition == true)
 			{
 				editStation(st);
 				break;
@@ -264,7 +287,7 @@ int main()
 		}
 		case 6:
 		{
-			if (!is_pipe && !is_station)
+			if (!is_pipe && !is_staition)
 			{
 				cout << "No Data" << endl;
 				break;
@@ -279,8 +302,8 @@ int main()
 			fout << is_pipe << endl;
 			if (is_pipe)
 				savepipe(pi, fout);
-			fout << is_station << endl;
-			if (is_station)
+			fout << is_staition << endl;
+			if (is_staition)
 				saveStation(st, fout);
 			fout.close();
 			break;
@@ -298,8 +321,8 @@ int main()
 			fin >> is_pipe;
 			if (is_pipe)
 				pi = browsepipe(fin);
-			fin >> is_station;
-			if (is_station)
+			fin >> is_staition;
+			if (is_staition)
 				st = browseStation(fin);
 			fin.close();
 			break;
