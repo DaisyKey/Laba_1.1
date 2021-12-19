@@ -113,7 +113,7 @@ void viewStation(const Station& s, bool is_staition)
 		cout << "Input any symbol to return to main menu: ";
 	}
 	else {
-		cout << "Staitions didn't create!" << endl << " Input any symbol to returning to main menu: " << endl;
+		cout << "Staitions didn't create!" << endl << "Input any symbol to returning to main menu: " << endl;
 	}
 }
 
@@ -137,6 +137,7 @@ void viewall(int q, const pipe& pi, const Station& st, bool is_staition, bool is
 
 void editpipe(pipe& p)
 {
+	system("cls");
 	if (p.repair_status == 0)
 	{
 		p.repair_status = 0;
@@ -148,16 +149,19 @@ void editpipe(pipe& p)
 		cout << "\n Pipe is repairing now"<< endl;
 	}
 
-	p.repair_status = Checking (0, 1, "\n'Change repair_status: 1 - repairng ; 0 - isn't repairing: ");
+	p.repair_status = Checking (0, 1, "\n Change repair_status: 1 - repairng ; 0 - isn't repairing: ");
+	system("cls");
+	cout << "Pipe's Repair status was changed!" << endl;
 
 };
 
 void editStation(Station& s)
 {
-	cout << "\n 3_ All workshops count:" << s.workshop << endl;
-	cout << "\n 2_ Busy workshops count:" << s.busy_workshop << endl;
+	system("cls");
+	cout << "\nAll workshops count:" << s.workshop << endl;
+	cout << "\nBusy workshops count:" << s.busy_workshop << endl;
 	int choise;
-	choise = Checking (0, 1, "\n'Input 1 for count+ or 0 for changing workshops count: ");
+	choise = Checking (0, 1, "\nInput 1 for count+ or 0 for count- : ");
 	do
 	{
 		if (choise == 1 && s.busy_workshop < s.workshop)
@@ -166,16 +170,17 @@ void editStation(Station& s)
 		}
 		else if (choise == 0 && s.busy_workshop > 0)
 		{
-			cout << " Busy workshop count (-) \n";
 			s.busy_workshop -= 1;
 		}
-		else
+		/*else
 		{
 			cout << "impossible" << endl;
-		}
+		}*/
 
 
 	} while (cin.fail() || Number(int(choise)));
+	system("cls");
+	cout << "Staition's parameters were changed!" << endl;
 };
 
 void savepipe(const pipe& p, ofstream& fout)
@@ -274,8 +279,15 @@ int main()
 			if (is_pipe == true)
 			{
 				editpipe(pi);
-				break;
+		
 			}
+			else {
+				system("cls");
+				cout << "You didn't add any pipes!" << endl;
+			
+			}
+			cout << "Returning to main menu..." << endl;
+			break;
 		}
 		case 5:
 		{
@@ -284,6 +296,12 @@ int main()
 				editStation(st);
 				break;
 			}
+			else {
+				system("cls");
+				cout << "You didn't add any staitions!" << endl;
+			}
+			cout << "Returning to main menu..." << endl;
+			break;
 		}
 		case 6:
 		{
