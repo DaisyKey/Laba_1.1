@@ -29,7 +29,6 @@ struct pipe
 pipe createpipe()
 {
 	system("cls");
-	// bool is_pipe = true;
 	cout << "ADD PIPE'S DATA" << endl;
 	pipe p;
 	p.id = 1;
@@ -53,7 +52,6 @@ struct Station
 Station createStation()
 {
 	system("cls");
-	//bool is_staition = true;
 	cout << "ADD STAITION'S DATA" << endl;
 	Station s;
 	s.id = 1;
@@ -294,7 +292,7 @@ int main()
 			if (is_staition == true)
 			{
 				editStation(st);
-				break;
+				
 			}
 			else {
 				system("cls");
