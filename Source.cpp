@@ -302,36 +302,41 @@ int main()
 			break;
 		}
 		case 6:
-		{
+		{system("cls");
 			if (!is_pipe && !is_staition)
 			{
 				cout << "No Data" << endl;
+				cout << "Returning to the main menu..." << endl;
 				break;
 			}
 			ofstream fout;
 			fout.open("all.txt", ios::out);
 			if (!fout.is_open())
 			{
-				cout << "Save failed" << endl;
+				cout << "Save failed" << endl << "Returning to the main menu..." << endl;
 				break;
 			}
 			fout << is_pipe << endl;
 			if (is_pipe)
 				savepipe(pi, fout);
+			
 			fout << is_staition << endl;
 			if (is_staition)
 				saveStation(st, fout);
 			fout.close();
+
+			cout << "Data was saved!" << endl << "Returning to the main menu..." << endl;
 			break;
 
 		}
 		case 7:
 		{
+			system("cls");
 			ifstream fin;
 			fin.open("all.txt", ios::in);
 			if (!fin.is_open())
 			{
-				cout << "loaad failed" << endl;
+				cout << "Load failed!" << endl << "Returning to the main menu... " << endl;
 				break;
 			}
 			fin >> is_pipe;
@@ -341,6 +346,7 @@ int main()
 			if (is_staition)
 				st = browseStation(fin);
 			fin.close();
+			cout << "Data was loaded!" << endl << "Returning to the main menu..." << endl;
 			break;
 		}
 		case 0:
