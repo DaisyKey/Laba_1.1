@@ -18,6 +18,7 @@ T Checking(T min, T max, string n)
 	return x;
 }
 
+
 struct pipe
 {
 	int id;
@@ -25,19 +26,6 @@ struct pipe
 	int diametr;
 	bool repair_status;
 };
-
-pipe createpipe()
-{
-	system("cls");
-	cout << "ADD PIPE'S DATA" << endl;
-	pipe p;
-	p.id = 1;
-	p.lenght = Checking(0, 1000, "\n Input Length:");
-	p.diametr = Checking(0, 1000, "\n Input diametr:");
-	p.repair_status = Checking(0, 1, "\n Input repair status: (0 - isn't repairing ; 1 - is repairing): ");
-	return p;
-};
-
 
 struct Station
 {
@@ -49,24 +37,47 @@ struct Station
 
 };
 
+template <typename T>
+bool is_valid(const T& obj)
+{
+	return obj.id > 0;
+
+}
+
+
+pipe createpipe()
+{
+	system("cls");
+	cout << "ADD PIPE'S DATA" << endl;
+	pipe p;
+	p.id = 1;
+	p.lenght = Checking(0, 1000, "\nInput Length:");
+	p.diametr = Checking(0, 1000, "\nInput diametr:");
+	p.repair_status = Checking(0, 1, "\nInput repair status: (0 - isn't repairing ; 1 - is repairing): ");
+	return p;
+};
+
+
+
+
 Station createStation()
 {
 	system("cls");
 	cout << "ADD STAITION'S DATA" << endl;
 	Station st;
 	st.id = 1;
-	cout << "\n Input station name:" << endl;
+	cout << "\nInput station name:";
 	cin.ignore(10000, '\n');
 	getline(cin, st.name);
-	st.workshop = Checking(1, 10000, "\n Input workshop's numbers :");
-	st.busy_workshop = Checking(0, st.workshop, "\n Input busy workshop numbers :");
-	st.effection = Checking(1, 100, "\n Input Effection:");
+	st.workshop = Checking(1, 10000, "\nInput workshop's numbers :");
+	st.busy_workshop = Checking(0, st.workshop, "\nInput busy workshop numbers :");
+	st.effection = Checking(1, 100, "\nInput Effection:");
 	return st;
 };
 
 bool Number(char Symbol)
 {
-	if (Symbol >= '0' && Symbol <= '9')
+	if (Symbol > '0' && Symbol <= '9')
 		return true;
 	return false;
 };
@@ -84,10 +95,11 @@ void main_menu()
 	cout << "0_exit" << endl;
 }
 
-void viewpipe(const pipe& p, bool is_pipe)
+void viewpipe(const pipe& p/* bool is_pipe*/)
 {   
 	system("cls");
-	if (is_pipe == true) {
+
+	if (/*is_pipe == true*/ /*p.id >= 0*/ is_valid(p) ) {
 		cout << "ID:" << p.id << endl;
 		cout << "Length:" << p.lenght << endl;
 		cout << "Diametr:" << p.diametr << endl;
@@ -99,10 +111,10 @@ void viewpipe(const pipe& p, bool is_pipe)
 	}
 }
 
-void viewStation(const Station& st, bool is_staition)
+void viewStation(const Station& st /*bool is_staition*/)
 {
 	system("cls");
-	if (is_staition == true) {
+	if (/*is_staition == true*/ /*st.id >= 0*/ is_valid(st) ) {
 		cout << "ID:" << st.id << endl;
 		cout << "Name:" << st.name << endl;
 		cout << "Workshop:" << st.workshop << endl;
@@ -115,18 +127,24 @@ void viewStation(const Station& st, bool is_staition)
 	}
 }
 
-void viewall(int q, const pipe& p, const Station& st, bool is_staition, bool is_pipe)
+void viewall(const pipe& p, const Station& st/*, bool is_staition, bool is_pipe*/)
 {
+	int chos;
+	chos = Checking(1, 2, "\nChoose 1 - pipe ; 2 - station: ");
+	//cout << "\n Choose 1 - pipe ; 2 - station " << endl;
+	
+	cin >> chos ;
 	string s;
-	switch (q)
+	switch ( chos )
+
 	{
 	case 1:
-		viewpipe(p, is_pipe);
+		viewpipe(p/*, is_pipe*/);
 		cin >> s;
 		system("cls");
 		break;
 	case 2:
-		viewStation(st, is_staition);
+		viewStation(st/*, is_staition*/);
 		cin >> s;
 		system("cls");
 		break;
@@ -231,6 +249,7 @@ Station browseStation(ifstream& fin)
 }
 
 
+
 int main()
 {
 
@@ -238,6 +257,8 @@ int main()
 	Station st;
 	bool is_pipe = false;
 	bool is_staition = false;
+	p.id = -1;
+	st.id = -1;
 	while (1)
 	{
 		main_menu();
@@ -261,16 +282,16 @@ int main()
 		}
 		case 3:
 				{
-					cout << "\n Choose 1 - pipe ; 2 - station "<< endl;
+					/*cout << "\n Choose 1 - pipe ; 2 - station "<< endl;
 					int q = 0;
-					cin >> q;
-				    viewall(q, p, st, is_staition, is_pipe);
+					cin >> q;*/
+				    viewall( p, st/* is_staition, is_pipe*/);
 				}
 				cout << "Returning to main menu..." << endl;
 			break;
 		case 4:
 		{
-			if (is_pipe == true)
+			if (is_valid(p)/*p.id >=0*//*is_pipe == true*/)
 			{
 				editpipe(p);
 		
@@ -285,7 +306,7 @@ int main()
 		}
 		case 5:
 		{
-			if (is_staition == true)
+			if (is_valid(st)/*st.id >= 0*//*is_staition == true*/)
 			{
 				editStation(st);
 				
@@ -299,7 +320,7 @@ int main()
 		}
 		case 6:
 		{system("cls");
-			if (!is_pipe && !is_staition)
+			if ( !is_valid(p) && !is_valid(st) /*!is_pipe && !is_staition*/)
 			{
 				cout << "No Data" << endl;
 				cout << "Returning to the main menu..." << endl;
@@ -312,12 +333,12 @@ int main()
 				cout << "Save failed" << endl << "Returning to the main menu..." << endl;
 				break;
 			}
-			fout << is_pipe << endl;
-			if (is_pipe)
+			fout << is_valid(p) << endl ;
+			if (is_valid(p))
 				savepipe(p, fout);
 			
-			fout << is_staition << endl;
-			if (is_staition)
+			fout << is_valid(st) << endl;
+			if (is_valid(st))
 				saveStation(st, fout);
 			fout.close();
 
