@@ -53,15 +53,15 @@ Station createStation()
 {
 	system("cls");
 	cout << "ADD STAITION'S DATA" << endl;
-	Station s;
-	s.id = 1;
+	Station st;
+	st.id = 1;
 	cout << "\n Input station name:" << endl;
 	cin.ignore(10000, '\n');
-	getline(cin, s.name);
-	s.workshop = Checking(1, 10000, "\n Input workshop's numbers :");
-	s.busy_workshop = Checking(0, s.workshop, "\n Input busy workshop numbers :");
-	s.effection = Checking(1, 100, "\n Input Effection:");
-	return s;
+	getline(cin, st.name);
+	st.workshop = Checking(1, 10000, "\n Input workshop's numbers :");
+	st.busy_workshop = Checking(0, st.workshop, "\n Input busy workshop numbers :");
+	st.effection = Checking(1, 100, "\n Input Effection:");
+	return st;
 };
 
 bool Number(char Symbol)
@@ -99,15 +99,15 @@ void viewpipe(const pipe& p, bool is_pipe)
 	}
 }
 
-void viewStation(const Station& s, bool is_staition)
+void viewStation(const Station& st, bool is_staition)
 {
 	system("cls");
 	if (is_staition == true) {
-		cout << "ID:" << s.id << endl;
-		cout << "Name:" << s.name << endl;
-		cout << "Workshop:" << s.workshop << endl;
-		cout << "Busy Workshops:" << s.busy_workshop << endl;
-		cout << "Effection:" << s.effection << endl;
+		cout << "ID:" << st.id << endl;
+		cout << "Name:" << st.name << endl;
+		cout << "Workshop:" << st.workshop << endl;
+		cout << "Busy Workshops:" << st.busy_workshop << endl;
+		cout << "Effection:" << st.effection << endl;
 		cout << "Input any symbol to return to main menu: ";
 	}
 	else {
@@ -115,13 +115,13 @@ void viewStation(const Station& s, bool is_staition)
 	}
 }
 
-void viewall(int q, const pipe& pi, const Station& st, bool is_staition, bool is_pipe)
+void viewall(int q, const pipe& p, const Station& st, bool is_staition, bool is_pipe)
 {
 	string s;
 	switch (q)
 	{
 	case 1:
-		viewpipe(pi, is_pipe);
+		viewpipe(p, is_pipe);
 		cin >> s;
 		system("cls");
 		break;
@@ -153,27 +153,23 @@ void editpipe(pipe& p)
 
 };
 
-void editStation(Station& s)
+void editStation(Station& st)
 {
 	system("cls");
-	cout << "\nAll workshops count:" << s.workshop << endl;
-	cout << "\nBusy workshops count:" << s.busy_workshop << endl;
+	cout << "\nAll workshops count:" << st.workshop << endl;
+	cout << "\nBusy workshops count:" << st.busy_workshop << endl;
 	int choise;
 	choise = Checking (0, 1, "\nInput 1 for count+ or 0 for count- : ");
 	do
 	{
-		if (choise == 1 && s.busy_workshop < s.workshop)
+		if (choise == 1 && st.busy_workshop < st.workshop)
 		{
-			s.busy_workshop += 1;
+			st.busy_workshop += 1;
 		}
-		else if (choise == 0 && s.busy_workshop > 0)
+		else if (choise == 0 && st.busy_workshop > 0)
 		{
-			s.busy_workshop -= 1;
+			st.busy_workshop -= 1;
 		}
-		/*else
-		{
-			cout << "impossible" << endl;
-		}*/
 
 
 	} while (cin.fail() || Number(int(choise)));
@@ -193,15 +189,15 @@ void savepipe(const pipe& p, ofstream& fout)
 	}
 }
 
-void saveStation(const Station& s, ofstream&fout)
+void saveStation(const Station& st, ofstream&fout)
 {
 	if (fout.is_open())
 	{
-		fout << s.id << endl
-			<< s.name << endl
-			<< s.workshop << endl
-			<< s.busy_workshop << endl
-			<< s.effection << endl;
+		fout << st.id << endl
+			<< st.name << endl
+			<< st.workshop << endl
+			<< st.busy_workshop << endl
+			<< st.effection << endl;
 	}
 }
 
@@ -238,7 +234,7 @@ Station browseStation(ifstream& fin)
 int main()
 {
 
-	pipe pi;
+	pipe p;
 	Station st;
 	bool is_pipe = false;
 	bool is_staition = false;
@@ -249,7 +245,7 @@ int main()
 		{
 		case 1:
 		{ 
-			pi = createpipe();
+			p = createpipe();
 			is_pipe = true;
 			system("cls");
 			cout << "Pipe was added!" << endl << "Returning to main menu..." << endl;
@@ -268,7 +264,7 @@ int main()
 					cout << "\n Choose 1 - pipe ; 2 - station "<< endl;
 					int q = 0;
 					cin >> q;
-				    viewall(q, pi, st, is_staition, is_pipe);
+				    viewall(q, p, st, is_staition, is_pipe);
 				}
 				cout << "Returning to main menu..." << endl;
 			break;
@@ -276,7 +272,7 @@ int main()
 		{
 			if (is_pipe == true)
 			{
-				editpipe(pi);
+				editpipe(p);
 		
 			}
 			else {
@@ -318,7 +314,7 @@ int main()
 			}
 			fout << is_pipe << endl;
 			if (is_pipe)
-				savepipe(pi, fout);
+				savepipe(p, fout);
 			
 			fout << is_staition << endl;
 			if (is_staition)
@@ -341,7 +337,7 @@ int main()
 			}
 			fin >> is_pipe;
 			if (is_pipe)
-				pi = browsepipe(fin);
+				p = browsepipe(fin);
 			fin >> is_staition;
 			if (is_staition)
 				st = browseStation(fin);
